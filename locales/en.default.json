@@ -1,0 +1,56 @@
+{
+  "general": {
+    "skip_to_content": "Skip to content",
+    "search": "Search",
+    "account": "Account",
+    "cart": "Cart",
+    "menu": "Menu",
+    "close": "Close",
+    "view_more": "View more",
+    "home": "Home",
+    "empty": "Nothing to show yet."
+  },
+  "products": {
+    "from_price": "From {{ price }}",
+    "sold_out": "Sold out",
+    "add_to_cart": "Add to cart",
+    "quantity": "Quantity",
+    "variant": "Choose an option",
+    "description": "Product details"
+  },
+  "collections": {
+    "products_count": "{{ count }} products",
+    "sort_by": "Sort by",
+    "apply_sort": "Apply",
+    "all": "All products"
+  },
+  "cart": {
+    "title": "My cart",
+    "empty": "Your cart is empty.",
+    "remove": "Remove",
+    "update": "Update cart",
+    "subtotal": "Subtotal",
+    "discounts": "Discounts",
+    "total": "Total",
+    "checkout": "Go to checkout",
+    "continue": "Continue shopping",
+    "tax_note": "Taxes and shipping are calculated at checkout."
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search products",
+    "submit": "Search",
+    "results": "Results for “{{ terms }}”",
+    "no_results": "No products found. Try another search."
+  },
+  "newsletter": {
+    "email": "Your email",
+    "submit": "Subscribe",
+    "success": "Thanks for subscribing."
+  },
+  "errors": {
+    "not_found_title": "Page not found",
+    "not_found_text": "The page you're looking for isn't here.",
+    "back_home": "Back to home"
+  }
+}

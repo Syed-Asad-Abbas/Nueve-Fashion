@@ -1,0 +1,14 @@
+<section class="section page-width">
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a><span aria-hidden="true">›</span><span>{{ collection.title | escape }}</span></nav>
+  <div class="page-heading"><div><h1>{{ collection.title | escape }}</h1><p>{{ 'collections.products_count' | t: count: collection.products_count }}</p></div>
+    <form class="sort-form" action="{{ collection.url }}" method="get"><label for="CollectionSort">{{ 'collections.sort_by' | t }}</label><select id="CollectionSort" name="sort_by">{% for option in collection.sort_options %}<option value="{{ option.value }}" {% if option.value == collection.sort_by %}selected{% endif %}>{{ option.name }}</option>{% endfor %}</select><button type="submit">{{ 'collections.apply_sort' | t }}</button></form>
+  </div>
+  {% paginate collection.products by 12 %}
+    {% if collection.products.size > 0 %}<div class="product-grid">{% for product in collection.products %}{% render 'product-card', product: product %}{% endfor %}</div>{% else %}<p class="empty-state">{{ 'general.empty' | t }}</p>{% endif %}
+    {% if paginate.pages > 1 %}<nav class="pagination" aria-label="Pagination">{{ paginate | default_pagination }}</nav>{% endif %}
+  {% endpaginate %}
+</section>
+
+{% schema %}
+{ "name": "Collection products", "settings": [] }
+{% endschema %}

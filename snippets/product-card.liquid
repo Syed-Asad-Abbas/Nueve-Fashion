@@ -1,0 +1,18 @@
+{% doc %}
+  Renders one product with image, price, and product-page link.
+  @param {product} product - Product to display.
+{% enddoc %}
+
+<article class="product-card">
+  <a class="product-card__image" href="{{ product.url }}">
+    {% if product.featured_image != blank %}
+      {{ product.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', widths: '300, 450, 600, 800', alt: product.featured_image.alt }}
+    {% else %}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  </a>
+  <div class="product-card__info">
+    <div><h3><a href="{{ product.url }}">{{ product.title | escape }}</a></h3><p>{% if product.price_varies %}{% assign minimum_price = product.price_min | money %}{{ 'products.from_price' | t: price: minimum_price }}{% else %}{{ product.price | money }}{% endif %}</p></div>
+    <a class="product-card__action" href="{{ product.url }}" aria-label="{{ product.title | escape }}">↗</a>
+  </div>
+</article>

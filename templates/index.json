@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "hero": { "type": "hero", "settings": { "heading": "Effortless style. Timeless elegance.", "text": "Discover timeless essentials designed for modern living.", "button_label": "Start shopping" } },
+    "categories": { "type": "category-grid", "settings": { "heading": "Curated for you" } },
+    "trending": { "type": "featured-collection", "settings": { "heading": "Trending now", "limit": 6 } },
+    "newsletter": { "type": "newsletter", "settings": { "heading": "Stay in style", "text": "Get updates on new arrivals and collections." } }
+  },
+  "order": ["hero", "categories", "trending", "newsletter"]
+}

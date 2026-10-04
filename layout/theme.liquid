@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title | escape }}{% unless page_title contains shop.name %} · {{ shop.name | escape }}{% endunless %}</title>
+    {% if page_description != blank %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    <link rel="canonical" href="{{ canonical_url }}">
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#MainContent">{{ 'general.skip_to_content' | t }}</a>
+    {% section 'header' %}
+    <main id="MainContent" tabindex="-1">{{ content_for_layout }}</main>
+    {% section 'footer' %}
+  </body>
+</html>

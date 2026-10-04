@@ -1,0 +1,28 @@
+<section class="section page-width product-page">
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a><span aria-hidden="true">›</span>{% if collection %}<a href="{{ collection.url }}">{{ collection.title | escape }}</a><span aria-hidden="true">›</span>{% endif %}<span>{{ product.title | escape }}</span></nav>
+  <div class="product-layout">
+    <div class="product-gallery">
+      {% for image in product.images limit: 4 %}<div class="product-gallery__image">{{ image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '400, 600, 900, 1200', alt: image.alt }}</div>{% else %}<div class="product-gallery__image">{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}</div>{% endfor %}
+    </div>
+    <div class="product-info">
+      <h1>{{ product.title | escape }}</h1>
+      <p class="product-info__price" data-product-price>{{ product.selected_or_first_available_variant.price | money }}</p>
+      {% form 'product', product, class: 'product-form' %}
+        {% unless product.has_only_default_variant %}
+          <label for="ProductVariant-{{ section.id }}">{{ 'products.variant' | t }}</label>
+          <select id="ProductVariant-{{ section.id }}" name="id" data-variant-select>
+            {% for variant in product.variants %}<option value="{{ variant.id }}" data-price="{{ variant.price | money | escape }}" data-available="{{ variant.available }}" {% if variant == product.selected_or_first_available_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>{{ variant.title | escape }}{% unless variant.available %} — {{ 'products.sold_out' | t }}{% endunless %}</option>{% endfor %}
+          </select>
+        {% else %}<input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">{% endunless %}
+        <label for="ProductQuantity-{{ section.id }}">{{ 'products.quantity' | t }}</label>
+        <input id="ProductQuantity-{{ section.id }}" type="number" name="quantity" min="1" value="1">
+        <button class="button button--dark" type="submit" data-add-button {% unless product.available %}disabled{% endunless %}>{% if product.available %}{{ 'products.add_to_cart' | t }}{% else %}{{ 'products.sold_out' | t }}{% endif %}</button>
+      {% endform %}
+      {% if product.description != blank %}<div class="product-description"><h2>{{ 'products.description' | t }}</h2><div class="rte">{{ product.description }}</div></div>{% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Product details", "settings": [] }
+{% endschema %}

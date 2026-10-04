@@ -1,0 +1,4 @@
+figma/
+node_modules/
+.shopify/
+*.zip

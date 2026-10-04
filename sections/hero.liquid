@@ -1,0 +1,24 @@
+<section class="hero page-width">
+  <div class="hero__content">
+    <h1>{{ section.settings.heading | escape }}</h1>
+    {% if section.settings.text != blank %}<p>{{ section.settings.text | escape }}</p>{% endif %}
+    {% if section.settings.button_link != blank and section.settings.button_label != blank %}<a class="button button--dark" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }} <span aria-hidden="true">↗</span></a>{% endif %}
+  </div>
+  <div class="hero__media">
+    {% if section.settings.image != blank %}{{ section.settings.image | image_url: width: 1800 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1800', alt: section.settings.image.alt }}{% else %}{{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}{% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Effortless style. Timeless elegance." },
+    { "type": "textarea", "id": "text", "label": "Text" },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Start shopping" },
+    { "type": "url", "id": "button_link", "label": "Button link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

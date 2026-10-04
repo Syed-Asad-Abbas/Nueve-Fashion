@@ -1,0 +1,43 @@
+<header class="site-header page-width">
+  <details class="mobile-menu">
+    <summary class="icon-button" aria-label="{{ 'general.menu' | t }}"><span aria-hidden="true">☰</span></summary>
+    <nav class="mobile-menu__panel" aria-label="{{ 'general.menu' | t }}">
+      {% for link in section.settings.menu.links %}<a href="{{ link.url }}">{{ link.title | escape }}</a>{% endfor %}
+    </nav>
+  </details>
+
+  <a class="site-header__brand" href="{{ routes.root_url }}" style="--logo-width: {{ settings.logo_width }}px">
+    {% if settings.logo != blank %}
+      {{ settings.logo | image_url: width: 480 | image_tag: alt: shop.name, class: 'site-header__logo-image', loading: 'eager' }}
+    {% else %}
+      <span>{{ shop.name | escape }}</span>
+    {% endif %}
+  </a>
+
+  <nav class="site-header__nav" aria-label="{{ 'general.menu' | t }}">
+    {% for link in section.settings.menu.links %}<a href="{{ link.url }}">{{ link.title | escape }}</a>{% endfor %}
+  </nav>
+
+  <div class="site-header__actions">
+    <details class="header-search">
+      <summary class="icon-button" aria-label="{{ 'general.search' | t }}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.5"/><path d="m16.5 16.5 5 5"/></svg>
+      </summary>
+      <div class="header-search__panel">
+        <form action="{{ routes.search_url }}" method="get" role="search">
+          <label for="HeaderSearch">{{ 'search.title' | t }}</label>
+          <div class="search-field"><input id="HeaderSearch" type="search" name="q" placeholder="{{ 'search.placeholder' | t }}" required><input type="hidden" name="type" value="product"><button type="submit">{{ 'search.submit' | t }}</button></div>
+        </form>
+      </div>
+    </details>
+    {% if shop.customer_accounts_enabled %}<a class="icon-button" href="{{ routes.account_url }}" aria-label="{{ 'general.account' | t }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="7.5" r="3.5"/><path d="M4.5 21v-2.5a7.5 7.5 0 0 1 15 0V21"/></svg></a>{% endif %}
+    <a class="icon-button cart-link" href="{{ routes.cart_url }}" aria-label="{{ 'general.cart' | t }} ({{ cart.item_count }})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 3h2l2.3 12.5h12.5L21 7H5"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+      {% if cart.item_count > 0 %}<span class="cart-link__count">{{ cart.item_count }}</span>{% endif %}
+    </a>
+  </div>
+</header>
+
+{% schema %}
+{ "name": "Header", "settings": [{ "type": "link_list", "id": "menu", "label": "Main menu", "default": "main-menu" }] }
+{% endschema %}

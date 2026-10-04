@@ -1,0 +1,25 @@
+<section class="section page-width">
+  <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="{{ routes.root_url }}">{{ 'general.home' | t }}</a><span aria-hidden="true">›</span><span>{{ 'cart.title' | t }}</span></nav>
+  <h1 class="page-title">{{ 'cart.title' | t }}</h1>
+  {% if cart.item_count > 0 %}
+    <form action="{{ routes.cart_url }}" method="post" id="cart" class="cart-layout">
+      <div class="cart-items">
+        {% for item in cart.items %}
+          <article class="cart-item">
+            <a class="cart-item__image" href="{{ item.url }}">{% if item.image != blank %}{{ item.image | image_url: width: 360 | image_tag: loading: 'lazy', alt: item.image.alt }}{% else %}{{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}{% endif %}</a>
+            <div class="cart-item__details"><h2><a href="{{ item.url }}">{{ item.product.title | escape }}</a></h2>{% unless item.variant.title == 'Default Title' %}<p>{{ item.variant.title | escape }}</p>{% endunless %}<p>{{ item.final_line_price | money }}</p><label for="CartQuantity-{{ forloop.index }}">{{ 'products.quantity' | t }}</label><input id="CartQuantity-{{ forloop.index }}" type="number" name="updates[]" min="0" value="{{ item.quantity }}"></div>
+            <a class="cart-item__remove" href="{{ item.url_to_remove }}">{{ 'cart.remove' | t }}</a>
+          </article>
+        {% endfor %}
+        <button class="button button--outline" type="submit" name="update">{{ 'cart.update' | t }}</button>
+      </div>
+      <aside class="cart-summary"><h2>{{ 'cart.title' | t }}</h2><div><span>{{ 'cart.subtotal' | t }}</span><strong>{{ cart.original_total_price | money }}</strong></div>{% if cart.total_discount > 0 %}<div><span>{{ 'cart.discounts' | t }}</span><strong>−{{ cart.total_discount | money }}</strong></div>{% endif %}<div><span>{{ 'cart.total' | t }}</span><strong>{{ cart.total_price | money }}</strong></div><p>{{ 'cart.tax_note' | t }}</p><button class="button button--dark" type="submit" name="checkout">{{ 'cart.checkout' | t }} ↗</button></aside>
+    </form>
+  {% else %}
+    <div class="empty-state"><p>{{ 'cart.empty' | t }}</p><a class="button button--dark" href="{{ routes.all_products_collection_url }}">{{ 'cart.continue' | t }}</a></div>
+  {% endif %}
+</section>
+
+{% schema %}
+{ "name": "Cart", "settings": [] }
+{% endschema %}
