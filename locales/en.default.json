@@ -52,5 +52,17 @@
     "not_found_title": "Page not found",
     "not_found_text": "The page you're looking for isn't here.",
     "back_home": "Back to home"
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Your gift card",
+      "subtext": "Your gift card is ready",
+      "expired": "Expired",
+      "gift_card_code": "Gift card code",
+      "add_to_apple_wallet": "Add to Apple Wallet",
+      "expiration_date": "Expires on {{ expires_on }}",
+      "shop_link": "Shop now",
+      "print_gift_card": "Print gift card"
+    }
   }
 }

@@ -1,0 +1,125 @@
+{% layout none %}
+
+<!DOCTYPE html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+
+  <title>{{ 'gift_cards.issued.title' | t }} — {{ shop.name }}</title>
+
+  {{ 'gift-card.css' | shopify_asset_url | stylesheet_tag }}
+
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+</head>
+
+<body>
+  <header role="banner">
+    <div class="gift-card__header">
+      <a href="{{ shop.url }}">
+        {% if settings.logo %}
+          {{ settings.logo | image_url: width: 200 | image_tag: alt: shop.name }}
+        {% else %}
+          <span class="gift-card__shop-name">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+    </div>
+  </header>
+
+  <main class="gift-card" role="main">
+    <section class="gift-card__content">
+      <h1 class="gift-card__heading">{{ 'gift_cards.issued.subtext' | t }}</h1>
+
+      {% if gift_card.enabled == false or gift_card.expired %}
+        <p class="gift-card__label gift-card__label--inactive">{{ 'gift_cards.issued.expired' | t }}</p>
+      {% endif %}
+
+      <div class="gift-card__image-wrapper">
+        <img
+          src="{{ 'gift-card/card.jpg' | shopify_asset_url }}"
+          alt=""
+          class="gift-card__image"
+          height="400"
+          width="600"
+          loading="lazy"
+        >
+      </div>
+
+      <div class="gift-card__price">
+        <p>
+          {% if gift_card.balance != gift_card.initial_value %}
+            <span class="gift-card__initial-value">{{ gift_card.initial_value | money }}</span>
+          {% endif %}
+          <span class="gift-card__current-value">{{ gift_card.balance | money }}</span>
+        </p>
+      </div>
+
+      <div class="gift-card__code-wrapper">
+        <input
+          type="text"
+          class="gift-card__code"
+          value="{{ gift_card.code | format_code }}"
+          aria-label="{{ 'gift_cards.issued.gift_card_code' | t }}"
+          readonly
+        >
+      </div>
+
+      {% if gift_card.pass_url %}
+        <a href="{{ gift_card.pass_url }}" class="gift-card__apple-wallet">
+          <img
+            src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
+            width="120"
+            height="40"
+            alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}"
+            loading="lazy"
+          >
+        </a>
+      {% endif %}
+
+      <div class="gift-card__qr-code" data-identifier="{{ gift_card.qr_identifier }}"></div>
+
+      {% if gift_card.expired and gift_card.enabled %}
+        <p class="gift-card__label gift-card__label--expired">
+          {{ 'gift_cards.issued.expired' | t }}
+        </p>
+      {% elsif gift_card.expires_on %}
+        <p class="gift-card__label">
+          {% assign formatted_expiration = gift_card.expires_on | date: '%d/%m/%y' %}
+          {{ 'gift_cards.issued.expiration_date' | t: expires_on: formatted_expiration }}
+        </p>
+      {% endif %}
+
+      <div class="gift-card__actions">
+        <a href="{{ shop.url }}" class="gift-card__btn" target="_blank" rel="noopener">
+          {{ 'gift_cards.issued.shop_link' | t }}
+        </a>
+        <button class="gift-card__btn gift-card__btn--secondary" onclick="window.print();">
+          {{ 'gift_cards.issued.print_gift_card' | t }}
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    /**
+     * Goal: Show a scannable QR code for the current gift card.
+     * Method: Find its placeholder and initialize Shopify's QR code library when available.
+     * Inputs/Outputs: Takes no arguments, updates the page, and returns nothing.
+     */
+    function renderGiftCardQrCode() {
+      var qrElement = document.querySelector('.gift-card__qr-code');
+      if (qrElement && typeof QRCode !== 'undefined') {
+        new QRCode(qrElement, {
+          text: qrElement.dataset.identifier,
+          width: 120,
+          height: 120,
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderGiftCardQrCode);
+  </script>
+</body>
+</html>
